@@ -7,6 +7,7 @@ const {
 const fetch = require('node-fetch');
 
 const ShowType = require('./types/show');
+const PeopleType = require('./types/people');
 
 module.exports = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -18,8 +19,18 @@ module.exports = new GraphQLSchema({
         args: {
           id: { type: new GraphQLNonNull(GraphQLID) }
         },
-        resolve: (parent, args, context) => {
+        resolve: (parent, args) => {
           return fetch(`http://api.tvmaze.com/shows/${args.id}`)
+            .then(resp => resp.json());
+        }
+      },
+      person: {
+        type: PeopleType,
+        args: {
+          id: { type: new GraphQLNonNull(GraphQLID) }
+        },
+        resolve: (parent, args) => {
+          return fetch(`http://api.tvmaze.com/people/${args.id}`)
             .then(resp => resp.json());
         }
       }
