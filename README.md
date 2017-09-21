@@ -3,7 +3,7 @@ This is a [GraphQL](http://graphql.org/) implementation of the [TVMaze API]( htt
 
 ## Example
 ### Request
-```json
+```
 {
   person(id: 49012) {
     url
