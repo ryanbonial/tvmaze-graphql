@@ -5,6 +5,9 @@ const {
   GraphQLInt,
   GraphQLList
 } = require('graphql');
+const fetch = require('node-fetch');
+
+const EpisodeType = require('./episode');
 
 module.exports = new GraphQLObjectType({
   name: 'Show',
@@ -22,6 +25,13 @@ module.exports = new GraphQLObjectType({
     officialSite: { type: GraphQLString },
     weight: { type: GraphQLString },
     summary: { type: GraphQLString },
-    updated: { type: GraphQLInt }
+    updated: { type: GraphQLInt },
+    episodes: {
+      type: new GraphQLList(EpisodeType),
+      resolve: (parent) => {
+        return fetch(`http://api.tvmaze.com/shows/${parent.id}/episodes`)
+          .then(resp => resp.json());
+      }
+    },
   })
 });
